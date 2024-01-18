@@ -1,0 +1,19 @@
+.background_read{
+    width: 100%;
+    height: 100vh;
+}
+
+.button_goback{
+    color: aliceblue;
+    background-color: rgb(243, 120, 12);
+    height: 40px;
+    width: 100px;
+}
+
+.goback{
+   font-size: 30px;
+}
+
+.goback:hover{
+    cursor: pointer;
+}
