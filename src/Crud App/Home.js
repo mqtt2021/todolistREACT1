@@ -1,7 +1,7 @@
 import React,{useEffect, useState , useRef} from 'react'
 import axios from "axios";
 import { Link } from "react-router-dom";
-import style from './Home.module.css'
+import style from './Home.module.scss'
 import { FaPlus } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
@@ -12,11 +12,6 @@ function Home() {
         title:''
       })
     const InputRef = useRef()
-    
-//  useEffect(()=>{
-//     axios.get('http://localhost:3000/tasks')
-//             .then(res=>setData(res.data))
-//  },[])
 
 const handleDelete = (id) => {
     const confirm = window.confirm('Would you like to delete task')
@@ -34,22 +29,6 @@ const handleDelete = (id) => {
             }  
 }
 
-//   const handleSubmit = async ( e ) => {
-//                 e.preventDefault()
-
-//                 axios.post('http://localhost:3000/tasks', inputdata)
-//                             .then(res => {
-//                                 return axios.get('http://localhost:3000/tasks');
-//                             })
-//                             .then(response => {
-//                                 setData(response.data)
-//                             })
-                        
-//                             .catch(error => {
-//                                 console.error('Error:', error);
-//                             });
-               
-//   }
 const handleSubmit = async (e) => {
     e.preventDefault();
     if(inputdata.title===''){
@@ -93,24 +72,17 @@ const handleSubmit = async (e) => {
     const confirm = window.confirm('Would you like to delete task')
     if(confirm){
         try {
-      // Sử dụng vòng lặp for...of để gửi yêu cầu delete cho từng phần tử
+     
       for (const item of data) {
         await axios.delete(`https://retoolapi.dev/fGXeVs/data/${item.id}`);
       }
 
-      // Gọi API để lấy dữ liệu sau khi xóa
-      const response = await axios.get('https://retoolapi.dev/fGXeVs/data');
-
-      // Cập nhật state với dữ liệu mới
-      setData(response.data);
+      fetchDataFromApi()
     } catch (error) {
       console.error('Error fetching or deleting data:', error);
     }
     }
-
-  
   };   
-  
   
   return (
     <div  className={style.father}>
@@ -135,53 +107,51 @@ const handleSubmit = async (e) => {
                                 </button>    
                 </form>
        
-        <div className={style.div_content_tasks}>
-          <ul className={style.ul_content_task} >
-            {data.map((d,i)=>(
-                    <li className={style.item_todo}  key={i}>
-                        
-                        <p className={style.item_todo_content}>{d.title}</p>
-                        <div className={style.div_button} >
-                                <Link to={`/update/${d.id}`}>
-                                      <button 
-                                              className={`${style.button} ${style.button_update}`}
-                                      >  
-                                              <FaRegEdit className={style.action_icon}/>
-                                      </button>
-                                </Link>
-                                
-                                <button
-                                        className={`${style.button} ${style.button_delete}`}
-                                        onClick={ (e) => handleDelete(d.id) }
-                                >
-                                      <MdDelete className={style.action_icon}/>
-                                </button>
+                <div className={style.div_content_tasks}>
+                  <ul className={style.ul_content_task} >
+                    {data.map((d,i)=>(
+                            <li className={style.item_todo}  key={i}>
 
-                                <Link to={`/read/${d.id}`}>
-                                      <button 
-                                                className={`${style.button} ${style.button_read}`}
-                                      >
-                                                <FaBookReader className={style.action_icon}/>
-                                      </button>
-                                </Link>
-                        </div>
-                    </li>
-                ))}
-          </ul>
-           
-          
-        </div>
-        <div className={style.footer}>
-                    <div className={style.remaining}>
-                            <p>{`You have ${data.length} pending tasks`}</p>
-                    </div>
+                                <p className={style.item_todo_content}>{d.title}</p>
+                                <div className={style.div_button} >
+                                        <Link to={`/update/${d.id}`}>
+                                              <button 
+                                                      className={`${style.button} ${style.button_update}`}
+                                              >  
+                                                      <FaRegEdit className={style.action_icon}/>
+                                              </button>
+                                        </Link>
+
+                                        <button
+                                                className={`${style.button} ${style.button_delete}`}
+                                                onClick={ (e) => handleDelete(d.id) }
+                                        >
+                                              <MdDelete className={style.action_icon}/>
+                                        </button>
                     
-                    <button
-                                className={style.button_clear}
-                                onClick={handleClearAll}
-                    >Clear All
-                    </button>     
-        </div>
+                                        <Link to={`/read/${d.id}`}>
+                                              <button 
+                                                        className={`${style.button} ${style.button_read}`}
+                                              >
+                                                        <FaBookReader className={style.action_icon}/>
+                                              </button>
+                                        </Link>
+                                </div>
+                            </li>
+                        ))}
+                  </ul>
+                </div>
+                <div className={style.footer}>
+                            <div className={style.remaining}>
+                                    <p>{`You have ${data.length} pending tasks`}</p>
+                            </div>
+
+                            <button
+                                        className={style.button_clear}
+                                        onClick={handleClearAll}
+                            >Clear All
+                            </button>     
+                </div>
     </div>
   )
 }

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React,{useState , useEffect} from 'react'
 import {  useNavigate , useParams } from "react-router-dom";
-import style from './Update.module.css'
+import style from './Update.module.scss'
 function Update() {
 
     const [inputdata, setInputdata] = useState({
@@ -14,15 +14,14 @@ function Update() {
         axios.get('https://retoolapi.dev/fGXeVs/data/' + id )
                 .then(res=>setInputdata(res.data))
                 .catch(err=>console.log(err))
-      } , [] )
+      } , [] )     
 
-      const handleSubmit = ( e ) => {
-                e.preventDefault()
+      const handleSubmit = ( e ) => {       
+                e.preventDefault()     
                 axios.put('https://retoolapi.dev/fGXeVs/data/' + id , inputdata)
-                            .then(res => {
-                                console.log(res.data)
-                                pageNavigate('/')
-                            })
+                            .then(res => {  
+                                pageNavigate('/')   
+                            })     
       }
   return (
    
@@ -35,7 +34,7 @@ function Update() {
                                 onChange={(e)=>setInputdata({...inputdata , title : e.target.value})}
                         />
                         <button
-                            className={style.button_confirm_update}
+                            className={style.button_confirm_update}   
                         >UPDATE</button>
                 
             </form>
